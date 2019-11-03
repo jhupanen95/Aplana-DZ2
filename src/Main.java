@@ -7,14 +7,20 @@ public class Main {
         wordSpliter(openFile());
     }
 
-    public static Scanner openFile(){
+    public static Scanner openFile() {
         Scanner scanner;
-        while (true){
+        while (true) {
             System.out.print("Input path: ");
             Scanner in = new Scanner(System.in);
             String path = in.nextLine();
             try {
-                scanner = new Scanner(new File(path));
+                if (path.toCharArray()[1] == ':'){
+                    scanner = new Scanner(new File(path));
+                } else {
+                    if ((path.toCharArray()[0] == '/') && (path.toCharArray()[0] == '\\')) {
+                        scanner = new Scanner(new File(System.getProperty("user.dir") + path));
+                    } else scanner = new Scanner(new File(System.getProperty("user.dir") + "/" + path));
+                }
                 break;
             }
             catch (FileNotFoundException ex){
@@ -23,6 +29,8 @@ public class Main {
         }
         return scanner;
     }
+
+
 
     public static void wordSpliter(Scanner scanner){
         TreeMap<String, Integer> statistics = new TreeMap<>();
